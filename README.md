@@ -40,6 +40,25 @@ heigh certainty.
 
 *in Orange/Apple example :* Each category has one single data : **eiher Apple or Orange**.We usually call them as *pure data*.
 ## We calculate information gain using Entropy
+We calculate Information Gain using Entropy
+by comparing the initial entropy with the final entropy.
+
+>> nformation Gain = Entropy before split - Entropy after split
+
+*Orange/Apple example :* The model splits based on all features
+
+**Split based on Weight**  : There are heavy and light apples, and also oranges in both categories
+
+- Entropy before split : High.
+- Entropy after split: High (because both categories still contain apples AND oranges)
+
+**Split based on Color:** Red objects are apples and orange objects are oranges
+
+- Entropy before split: High (by default, like most datasets)
+- Entropy after split: Low (because now we have two separate, pure categories - one for apples and one for oranges)
+
+
+
   
 
 
