@@ -5,7 +5,7 @@
 Let's consider a prediction model. As we know, such a model often contains many features. The problem is that we don't initially know which features are the most important.
 Some features are not useful for prediction at all. In fact, some can cause significant prediction errors because they contain no meaningful information related to the target.
 
-For example, we want to predict whether a fruit is an Orange or an Apple based on the given features: Weight, Size, and Color. 
+For example, we want to predict whether a fruit is an Orange or an Apple based on the given features: **Weight, Size** and **Color**. 
 If the model bases its predictions only on Weight, it will not learn properly because this feature has little to do with distinguishing an apple from an orange.
 
 **Therefore, the model must select features that contain the most information about the target.**
@@ -28,34 +28,104 @@ Information Gain helps us :
 ## Entropy is a measure of messiness or uncertainty
 
 
-**Heigh entropy** :  It is like a garden in which red , yellow and white flowers are all in the same area.So that you can't count each individual flowers separately. 
-If you point to random flower it is hard to predict the color.
-
-*in Orange/Apple example :* Actually we already know thare should be 2 categories :**Orange and Apple** ,since there are two potential outputs.
-. But the point is that neither of them are pure.In other words , both categories are fulled with a mix of apples and oranges .
-
-**Low entropy**  : Flowers are seperate so that you can countn each category separately.You know where red flowers are and point directly at this position with 
-heigh certainty.
+**High entropy** :  High entropy: This is like a garden where red, yellow, and white flowers are all
+mixed together in the same area. You can't easily count the flowers in each category separately. If you point to a random flower, it is hard to predict its color.
 
 
-*in Orange/Apple example :* Each category has one single data : **eiher Apple or Orange**.We usually call them as *pure data*.
+*In the Orange/Apple example:* We know there should be two categories, "Orange" and "Apple," since there are two potential outputs. However, the key point is that neither category is pure. In other words, both categories contain a mix of apples and oranges.
+
+**Low entropy:** The flowers are separated, allowing you to count each category easily. 
+You know exactly where the red flowers are and can point to them with high certainty.
+
+*in the Orange/Apple example :* Each category contains olny onr type of fruit : **eiher all Apple or all Orange**.We usually call this *pure data*.
+
 ## We calculate information gain using Entropy
-We calculate Information Gain using Entropy
-by comparing the initial entropy with the final entropy.
+We calculate Information Gain by comparing the entropy of a dataset before and after a split. 
+>> information Gain = Entropy before split - Entropy after split
 
->> nformation Gain = Entropy before split - Entropy after split
+# Orange Apple classification example :
+## problem : Single feature split is Insufficient
+### Initial state :
+- **Dataset :** Mixed Oranges and Apples
+- **Entropy before split :** High (Heigh impurity /Uncertainty)
+  
+### Split based on weight alone :
+**Abesrvation**
+- There are heavy apples and light apples
+- There are heavy oranges and light oranges
+- Oranges appear in both category
+- **Entropy :** High
+- **IG :** Low
+  
+### Solusion : Look for maximum Information Gain(Texture)
+To effectively classify Apples and Oranges we have to evaluate multiple features and select the one with **Highest Information Gain**.
 
-*Orange/Apple example :* The model splits based on all features
+- **Weight :** High Entropy and low Information Gain(As we have observed)
+- **Size :** (small,large)
+  
+  - There are small and large apples
+  - There are small and larges oranges
+  - Both categories contain apples and oranges
+  **entropy :**  High
+  **Information Gain :** Low
+    
+- **Color :** (Orange/red)
 
-**Split based on Weight**  : There are heavy and light apples, and also oranges in both categories
+  - Apples are mostly red
+  - Oranges are mostly orange
+  - **Entropy :** high
+  - **Information Gain :** high
 
-- Entropy before split : High.
-- Entropy after split: High (because both categories still contain apples AND oranges)
+# Implementation 
+```python
+from sklearn.feature_selection import mutual_info_classif
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
+import pandas as pd
 
-**Split based on Color:** Red objects are apples and orange objects are oranges
+# Sample data
+X = pd.DataFrame({
+    'weight_g': [120,124,123,
+                 95,99,119,
+                 134,120,121,
+                 100,99,98,
+                 111,112,120],
+    'color': ['red','orange','red',
+              'red','red','red',
+              'orange','orange','red',
+              'orange','red','red',
+              'orange','red','red'],
 
-- Entropy before split: High (by default, like most datasets)
-- Entropy after split: Low (because now we have two separate, pure categories - one for apples and one for oranges)
+
+    'Size':['medium','big','big',
+            'small','medium','medium',
+            'big','medium','medium',
+            'small','small','small',
+            'small','small','medium']  
+})
+
+#Sample target
+y = np.array(['apple','orange','apple',
+              'apple','apple','apple',
+              'orange','orange','apple',
+              'orange','apple','apple',
+              'orange','apple','apple']) 
+x_encoded = X.apply(LabelEncoder().fit_transform)
+ig_scores = mutual_info_classif(x_encoded, y)
+ig_scores
+# Create a DataFrame for better visualization
+feature_importance = pd.DataFrame({
+    'feature': X.columns,
+    'information_gain': ig_scores
+}).sort_values('information_gain', ascending=False)
+
+print(feature_importance)
+```
+
+  
+
+
+
 
 
 
