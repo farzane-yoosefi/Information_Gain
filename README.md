@@ -82,7 +82,11 @@ from sklearn.feature_selection import mutual_info_classif
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 import pandas as pd
+```
+First we create the dataset and define target and feature values.
 
+
+```python
 # Sample data
 X = pd.DataFrame({
     'weight_g': [120,124,123,
@@ -109,7 +113,11 @@ y = np.array(['apple','orange','apple',
               'apple','apple','apple',
               'orange','orange','apple',
               'orange','apple','apple',
-              'orange','apple','apple']) 
+              'orange','apple','apple'])
+```
+
+
+```python
 x_encoded = X.apply(LabelEncoder().fit_transform)
 ig_scores = mutual_info_classif(x_encoded, y)
 ig_scores
