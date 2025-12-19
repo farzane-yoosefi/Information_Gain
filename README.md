@@ -1,6 +1,7 @@
 # Information Gain and implementation
 
 ## Why is Information Gain important ?
+>> These notes serve to demonstrate my machine learning knowledge to potential employers while also helping beginners learn complex concepts in simple terms.
 
 Let's consider a prediction model. As we know, such a model often contains many features. The problem is that we don't initially know which features are the most important.
 Some features are not useful for prediction at all. In fact, some can cause significant prediction errors because they contain no meaningful information related to the target.
